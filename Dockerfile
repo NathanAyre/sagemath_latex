@@ -43,16 +43,22 @@ class NoNodeJSWarningFilter(logging.Filter):\n\
 logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 " > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
 
-RUN pip install "dvipng,\
-ghostscript,\
-texlive-fonts-recommended,\
-texlive-plain-generic,\
-texlive-latex-base,\
-texlive-latex-extra,\
-texlive-latex-recommended,\
-texlive-publishers,\
-texlive-science,\
-texlive-xetex,\
-cm-super,\
-pythontex"
+# 1. Install system dependencies via apt
+RUN apt-get update && apt-get install -y \
+    dvipng \
+    ghostscript \
+    texlive-fonts-recommended \
+    texlive-plain-generic \
+    texlive-latex-base \
+    texlive-latex-extra \
+    texlive-latex-recommended \
+    texlive-publishers \
+    texlive-science \
+    texlive-xetex \
+    cm-super \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Install the Python library via pip
+RUN pip install --no-cache-dir pythontex
+
 RUN jupyter labextension install @jupyterlab/latex

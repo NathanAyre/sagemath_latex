@@ -42,3 +42,17 @@ class NoNodeJSWarningFilter(logging.Filter):\n\
 \n\
 logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 " > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
+
+RUN pip install dvipng,\
+ghostscript,\
+texlive-fonts-recommended,\
+texlive-plain-generic,\
+texlive-latex-base,\
+texlive-latex-extra,\
+texlive-latex-recommended,\
+texlive-publishers,\
+texlive-science,\
+texlive-xetex,\
+cm-super,\
+pythontex
+RUN jupyter labextension install @jupyterlab/latex

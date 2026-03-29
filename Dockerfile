@@ -16,9 +16,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Ensure extension is installed in the SAME environment as JupyterLab
-RUN /sage/venv/bin/pip install jupyterlab-latex
+RUN pip install jupyterlab-latex
 # Force JupyterLab to recognise and enable it
-RUN /sage/venv/bin/jupyter server extension enable --py jupyterlab_latex --sys-prefix
+RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
 # Rebuild JupyterLab frontend (this is the critical step)
 # RUN /sage/venv/bin/jupyter lab build
 # --- END BLOCK ---

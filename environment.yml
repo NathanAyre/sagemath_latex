@@ -1,10 +1,11 @@
 channels:
     - conda-forge
 dependencies:
+    - sage
     - python
     - pip
     - setuptools
     - matplotlib
+    - tectonic
     - jupyterlab
-    - pip:
-      - jupyterlab_latex
+    - jupyterlab_latex

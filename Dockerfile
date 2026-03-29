@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN /sage/venv/bin/pip install jupyterlab-latex
+RUN jupyter labextension install @jupyterlab/latex
 # --- END BLOCK ---
 
 # Create user with uid 1000

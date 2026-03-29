@@ -9,4 +9,3 @@ texlive-publishers
 texlive-science
 texlive-xetex
 cm-super
-pythontex

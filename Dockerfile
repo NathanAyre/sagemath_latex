@@ -20,7 +20,7 @@ RUN /sage/venv/bin/pip install jupyterlab-latex
 # Force JupyterLab to recognise and enable it
 RUN /sage/venv/bin/jupyter server extension enable --py jupyterlab_latex --sys-prefix
 # Rebuild JupyterLab frontend (this is the critical step)
-RUN /sage/venv/bin/jupyter lab build
+# RUN /sage/venv/bin/jupyter lab build
 # --- END BLOCK ---
 
 # Create user with uid 1000

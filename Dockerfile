@@ -4,7 +4,15 @@ USER root
 
 # --- ADD THIS BLOCK ---
 RUN apt-get update && apt-get install -y \
-    tectonic \
+    texlive-fonts-recommended \
+    texlive-plain-generic \
+    texlive-latex-base \
+    texlive-latex-extra \
+    texlive-latex-recommended \
+    texlive-publishers \
+    texlive-science \
+    texlive-xetex \
+    cm-super \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN /sage/venv/bin/pip install jupyterlab-latex

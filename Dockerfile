@@ -3,9 +3,6 @@ FROM ghcr.io/sagemath/sage-binder-env:10.7
 USER root
 
 # --- ADD THIS BLOCK ---
-COPY sagetex-run.py /usr/local/bin/sagetex-run.py
-RUN chmod +x /usr/local/bin/sagetex-run.py
-
 RUN apt-get update && apt-get install -y \
     texlive-fonts-recommended \
     texlive-plain-generic \
@@ -27,6 +24,9 @@ RUN pip install jupyter-offlinenotebook
 RUN jupyter server extension enable --py jupyter_offlinenotebook --sys-prefix
 # Rebuild JupyterLab frontend (this is the critical step)
 # RUN /sage/venv/bin/jupyter lab build
+
+COPY sagetex-run.py /usr/local/bin/sagetex-run.py
+RUN chmod +x /usr/local/bin/sagetex-run.py
 
 COPY compile-latex.sh /usr/local/bin/compile-latex.sh
 RUN chmod +x /usr/local/bin/compile-latex.sh

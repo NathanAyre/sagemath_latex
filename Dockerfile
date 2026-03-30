@@ -19,6 +19,9 @@ RUN apt-get update && apt-get install -y \
 RUN pip install jupyterlab-latex
 # Force JupyterLab to recognise and enable it
 RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
+
+RUN pip install jupyter-offlinenotebook
+RUN jupyter server extension enable --py jupyter_offlinenotebook --sys-prefix
 # Rebuild JupyterLab frontend (this is the critical step)
 # RUN /sage/venv/bin/jupyter lab build
 # --- END BLOCK ---

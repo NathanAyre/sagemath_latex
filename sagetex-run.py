@@ -74,6 +74,6 @@ irst.'.format(src), file=sys.stderr)
 
     if run_sage:
         print('Need to run Sage on {0}.'.format(src))
-        load(f"{src}.sagetex.sage")
+        os.system(f"sage {src}.sagetex.sage")
     else:
         print('Not necessary to run Sage on {0}.'.format(src))

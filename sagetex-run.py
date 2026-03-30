@@ -74,6 +74,19 @@ irst.'.format(src), file=sys.stderr)
 
     if run_sage:
         print('Need to run Sage on {0}.'.format(src))
-        os.system(f"sage {src}.sagetex.sage")
+        from IPython.core.interactiveshell import InteractiveShell
+        from sage.repl.ipython_extension import SageCustomizations
+
+        shell = InteractiveShell()
+        o = SageCustomizations(shell)
+        o.init_environment()
+        o.init_inspector()
+        o.init_line_transforms()
+        o.register_interface_magics()
+        o.run_init()
+
+        shell.run_cell(
+            Path(f"{src}.sagetex.sage").read_text()
+        )
     else:
         print('Not necessary to run Sage on {0}.'.format(src))

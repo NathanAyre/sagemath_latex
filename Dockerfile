@@ -59,7 +59,7 @@ class NoNodeJSWarningFilter(logging.Filter):\n\
 \n\
 logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 \n\
-c.LatexConfig.shell_escape = 'allow'
+c.LatexConfig.shell_escape = 'allow'\
 \n\
 c.LatexConfig.manual_cmd_args = [\
     '/usr/local/bin/compile-latex.sh',\

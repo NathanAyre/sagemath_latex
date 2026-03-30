@@ -27,6 +27,9 @@ RUN pip install jupyter-offlinenotebook
 RUN jupyter server extension enable --py jupyter_offlinenotebook --sys-prefix
 # Rebuild JupyterLab frontend (this is the critical step)
 # RUN /sage/venv/bin/jupyter lab build
+
+COPY compile-latex.sh /usr/local/bin/compile-latex.sh
+RUN chmod +x /usr/local/bin/compile-latex.sh
 # --- END BLOCK ---
 
 # Create user with uid 1000

@@ -64,6 +64,7 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 " > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
 
 RUN echo "\
+c = get_config() \n\
 c.LatexConfig.shell_escape = 'allow'\
 \n\
 c.LatexConfig.manual_cmd_args = [\

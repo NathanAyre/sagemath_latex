@@ -72,4 +72,4 @@ c.LatexConfig.manual_cmd_args = [\
     'compile-latex.sh',\
     '{filename}'\
 ]\n\
-" > /home/${NB_USER}/.jupyter/jupyter_notebook_config.py
+" > /home/${NB_USER}/.jupyter/jupyter_config.py

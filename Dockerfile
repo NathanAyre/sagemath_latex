@@ -66,6 +66,10 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 RUN echo "\
 c.LatexConfig.shell_escape = 'allow'\
 \n\
-c.LatexConfig.latex_command = \
-    '/usr/local/bin/compile-latex.sh'\
+c.LatexConfig.run_times = 1\
+\n\
+c.LatexConfig.manual_cmd_args = [\
+    'compile-latex.sh',\
+    '{filename}'\
+]\n\
 " > /home/${NB_USER}/.jupyter/jupyter_notebook_config.py

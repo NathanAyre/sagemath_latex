@@ -63,7 +63,10 @@ class NoNodeJSWarningFilter(logging.Filter):\n\
 logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 " > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
 
-RUN echo "\
+RUN echo "try:\n\
+    print(c)\n\
+except BaseException:\n\
+    c = get_config()\n\
 c.LatexConfig.shell_escape = 'allow'\
 \n\
 c.LatexConfig.run_times = 1\
@@ -72,4 +75,5 @@ c.LatexConfig.manual_cmd_args = [\
     'compile-latex.sh',\
     '{filename}'\
 ]\n\
+print(c.LatexConfig.manual_cmd_args)\
 " > /home/${NB_USER}/.jupyter/jupyter_config.py

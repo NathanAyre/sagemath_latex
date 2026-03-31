@@ -11,10 +11,10 @@ if [[ "$JOBNAME" != */* ]]; then
 fi
 
 # first LaTeX pass
-pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -shell-escape "$FILE"
+pdflatex -synctex=1 -interaction=nonstopmode -shell-escape "$FILE"
 
 # run your custom SageTeX script
-python3 /usr/local/bin/sagetex-run.py "./$JOBNAME"
+python3 /usr/local/bin/sagetex-run.py "$JOBNAME"
 
 # second LaTeX pass
-pdflatex  -synctex=1 -interaction=nonstopmode -file-line-error -shell-escape "$FILE"
+pdflatex  -synctex=1 -interaction=nonstopmode -shell-escape "$FILE"

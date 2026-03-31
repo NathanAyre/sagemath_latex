@@ -69,4 +69,4 @@ c.LatexConfig.shell_escape = 'allow'\
 c.LatexConfig.manual_cmd_args = [\
     '/usr/local/bin/compile-latex.sh',\
     '{filename}'\
-]" > /home/${NB_USER}/.jupyter/jupyter_server_config.py
+]" > /home/${NB_USER}/.jupyter/jupyter_notebook_config.py

@@ -61,10 +61,12 @@ class NoNodeJSWarningFilter(logging.Filter):\n\
         return 'Could not determine jupyterlab build status without nodejs' not in record.getMessage()\n\
 \n\
 logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
-\n\
+" > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
+
+RUN echo "\
 c.LatexConfig.shell_escape = 'allow'\
 \n\
 c.LatexConfig.manual_cmd_args = [\
     '/usr/local/bin/compile-latex.sh',\
     '{filename}'\
-]" > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
+]" > /home/${NB_USER}/.jupyter/jupyter_server_config.py

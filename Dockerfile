@@ -80,7 +80,7 @@ print(c.LatexConfig.manual_cmd_args)\
 # Download and install nvm:
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
 # in lieu of restarting the shell
-RUN \. "$HOME/.nvm/nvm.sh"
+RUN \. "/home/user/.nvm/nvm.sh"
 # Download and install Node.js:
 RUN nvm install 24
 

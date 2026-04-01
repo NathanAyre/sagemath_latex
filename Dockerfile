@@ -25,21 +25,6 @@ RUN chmod +x /usr/local/bin/sagetex-run.py
 
 COPY compile-latex.sh /usr/local/bin/compile-latex.sh
 RUN chmod +x /usr/local/bin/compile-latex.sh
-
-# Download and install nvm:
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-
-# in lieu of restarting the shell
-# RUN /. "$HOME/.nvm/nvm.sh"
-
-# Download and install Node.js:
-RUN nvm install 25
-
-# Verify the Node.js version:
-RUN node -v
-
-# Verify npm version:
-RUN npm -v
 # --- END BLOCK ---
 
 # Create user with uid 1000

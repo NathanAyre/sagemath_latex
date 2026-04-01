@@ -87,6 +87,6 @@ RUN nvm install 24
 # Verify the Node.js version:
 RUN node -v # Should print "v24.14.1".
 # Verify npm version:
-npm -v # Should print "11.11.0".
+RUN npm -v # Should print "11.11.0".
 
-pip install --upgrade setuptools[core]
+RUN pip install --upgrade setuptools[core]

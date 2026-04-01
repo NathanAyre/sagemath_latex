@@ -30,7 +30,7 @@ RUN chmod +x /usr/local/bin/compile-latex.sh
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
 
 # in lieu of restarting the shell
-RUN "/home/user/.nvm/nvm.sh"
+RUN ls "/home/user/.nvm/nvm.sh"
 
 # Download and install Node.js:
 RUN nvm install 25

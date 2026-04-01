@@ -15,11 +15,6 @@ RUN apt-get update && apt-get install -y \
     cm-super \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Ensure extension is installed in the SAME environment as JupyterLab
-RUN pip install jupyterlab-latex
-# Force JupyterLab to recognise and enable it
-RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
-
 RUN pip install jupyter-offlinenotebook
 RUN jupyter server extension enable --py jupyter_offlinenotebook --sys-prefix
 # Rebuild JupyterLab frontend (this is the critical step)
@@ -63,6 +58,10 @@ class NoNodeJSWarningFilter(logging.Filter):\n\
 logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 " > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
 
+RUN pip install jupyterlab-latex
+# Force JupyterLab to recognise and enable it
+RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
+
 RUN echo "try:\n\
     print(c)\n\
 except BaseException:\n\
@@ -77,3 +76,17 @@ c.LatexConfig.manual_cmd_args = [\
 ]\n\
 print(c.LatexConfig.manual_cmd_args)\
 " > /home/${NB_USER}/.jupyter/jupyter_config.py
+
+# Download and install nvm:
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+# in lieu of restarting the shell
+RUN \. "$HOME/.nvm/nvm.sh"
+# Download and install Node.js:
+RUN nvm install 24
+
+# Verify the Node.js version:
+RUN node -v # Should print "v24.14.1".
+# Verify npm version:
+npm -v # Should print "11.11.0".
+
+pip install --upgrade setuptools[core]

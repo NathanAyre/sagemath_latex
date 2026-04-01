@@ -25,6 +25,18 @@ RUN chmod +x /usr/local/bin/sagetex-run.py
 
 COPY compile-latex.sh /usr/local/bin/compile-latex.sh
 RUN chmod +x /usr/local/bin/compile-latex.sh
+
+# Download and install nvm:
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+# in lieu of restarting the shell
+RUN /. "/home/user/.nvm/nvm.sh"
+# Download and install Node.js:
+RUN nvm install 24
+
+# Verify the Node.js version:
+RUN node -v
+# Verify npm version:
+RUN npm -v
 # --- END BLOCK ---
 
 # Create user with uid 1000
@@ -76,17 +88,5 @@ c.LatexConfig.manual_cmd_args = [\
 ]\n\
 print(c.LatexConfig.manual_cmd_args)\
 " > /home/${NB_USER}/.jupyter/jupyter_config.py
-
-# Download and install nvm:
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-# in lieu of restarting the shell
-RUN "/home/user/.nvm/nvm.sh"
-# Download and install Node.js:
-RUN nvm install 24
-
-# Verify the Node.js version:
-RUN node -v # Should print "v24.14.1".
-# Verify npm version:
-RUN npm -v # Should print "11.11.0".
 
 RUN pip install --upgrade setuptools[core]

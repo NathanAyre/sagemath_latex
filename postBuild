@@ -8,10 +8,11 @@ echo "\
 \n\
 c.LatexConfig.run_times = 1\
 \n\
-c.LatexConfig.manual_cmd_args = [\
-    '/usr/local/bin/compile-latex.sh',\
-    '{filename}.tex'\
-]\n\
+# c.LatexConfig.manual_cmd_args = [\
+#     '/usr/local/bin/compile-latex.sh',\
+#     '{filename}.tex'\
+# ]\n\
+c.LatexConfig.latex_command = "/usr/local/bin/compile-latex.sh"\
 " > /etc/jupyter/jupyter_server_config.py
 
 cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/

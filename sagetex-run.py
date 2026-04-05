@@ -89,5 +89,4 @@ irst.'.format(src), file=sys.stderr)
     else:
         print('Not necessary to run Sage on {0}.'.format(src))
 
-
-
+run(sys.argv[-1])

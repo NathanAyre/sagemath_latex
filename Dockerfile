@@ -46,7 +46,7 @@ RUN ln -s /sage/venv/share/jupyter/kernels/sagemath $(jupyter --data-dir)/kernel
 ENV PATH="/sage:$PATH"
 
 WORKDIR /home/${NB_USER}
-
+RUN mkdir /home/${NB_USER}/.jupyter
 RUN echo "\
 import logging\n\
 \n\

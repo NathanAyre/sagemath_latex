@@ -59,7 +59,7 @@ c.LatexConfig.manual_cmd_args = [\
 ]\n\
 " > /home/${NB_USER}/.jupyter/jupyter_server_config.py
 RUN jupyter server --generate-config
-RUN cp /home/${NB_USER}/.jupyter/jupyter_server_config.py \
+RUN cp -f /home/${NB_USER}/.jupyter/jupyter_server_config.py \
        /home/${NB_USER}/.sage/jupyter-4.1/
 RUN echo "\
 import logging\n\

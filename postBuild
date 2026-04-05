@@ -2,3 +2,14 @@
 
 # install JupyterLab extension
 jupyter labextension install @jupyterlab/latex
+mkdir -p /etc/jupyter
+echo "\
+# c.LatexConfig.shell_escape = 'allow'\
+\n\
+c.LatexConfig.run_times = 1\
+\n\
+c.LatexConfig.manual_cmd_args = [\
+    '/usr/local/bin/compile-latex.sh',\
+    '{filename}.tex'\
+]\n\
+" > /etc/jupyter/jupyter_server_config.py

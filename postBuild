@@ -15,6 +15,7 @@ c.LatexConfig.run_times = 1\
 c.LatexConfig.latex_command = "/usr/local/bin/compile-latex.sh"\
 " > /etc/jupyter/jupyter_server_config.py
 
+mkdir /home/user/.jupyter
 cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/
 mkdir -p /home/user/.sage/jupyter-4.1
 cp /etc/jupyter/jupyter_server_config.py /home/user/.sage/jupyter-4.1/

@@ -12,7 +12,7 @@ c.LatexConfig.run_times = 1\
 #     '/usr/local/bin/compile-latex.sh',\
 #     '{filename}.tex'\
 # ]\n\
-c.LatexConfig.latex_command = "/usr/local/bin/compile-latex.sh"\
+c.LatexConfig.latex_command = '/usr/local/bin/compile-latex.sh'\
 " > /etc/jupyter/jupyter_server_config.py
 
 mkdir /home/user/.jupyter

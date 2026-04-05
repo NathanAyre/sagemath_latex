@@ -47,20 +47,6 @@ ENV PATH="/sage:$PATH"
 
 WORKDIR /home/${NB_USER}
 
-RUN mkdir -p /home/${NB_USER}/.jupyter
-RUN echo "\
-# c.LatexConfig.shell_escape = 'allow'\
-\n\
-c.LatexConfig.run_times = 1\
-\n\
-c.LatexConfig.manual_cmd_args = [\
-    'compile-latex.sh',\
-    '{filename}.tex'\
-]\n\
-" > /home/${NB_USER}/.jupyter/jupyter_server_config.py
-RUN mkdir -p /home/${NB_USER}/.sage/jupyter-4.1
-RUN cp -f /home/${NB_USER}/.jupyter/jupyter_server_config.py \
-       /home/${NB_USER}/.sage/jupyter-4.1/
 RUN echo "\
 import logging\n\
 \n\

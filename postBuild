@@ -15,3 +15,5 @@ c.LatexConfig.manual_cmd_args = [\
 " > /etc/jupyter/jupyter_server_config.py
 
 cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/
+mkdir -p /home/user/.sage/jupyter-4.1
+cp /etc/jupyter/jupyter_server_config.py /home/user/.sage/jupyter-4.1/

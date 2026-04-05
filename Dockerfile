@@ -49,6 +49,19 @@ WORKDIR /home/${NB_USER}
 
 RUN mkdir -p /home/${NB_USER}/.jupyter
 RUN echo "\
+# c.LatexConfig.shell_escape = 'allow'\
+\n\
+c.LatexConfig.run_times = 1\
+\n\
+c.LatexConfig.manual_cmd_args = [\
+    'compile-latex.sh',\
+    '{filename}.tex'\
+]\n\
+" > /home/${NB_USER}/.jupyter/jupyter_server_config.py
+RUN jupyter server --generate-config
+RUN cp /home/${NB_USER}/.jupyter/jupyter_server_config.py \
+       /home/${NB_USER}/.sage/jupyter-4.1/
+RUN echo "\
 import logging\n\
 \n\
 class NoNodeJSWarningFilter(logging.Filter):\n\
@@ -61,20 +74,5 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 RUN pip install jupyterlab-latex
 # Force JupyterLab to recognise and enable it
 RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
-
-RUN echo "try:\n\
-    print(c)\n\
-except BaseException:\n\
-    c = get_config()\n\
-c.LatexConfig.shell_escape = 'allow'\
-\n\
-c.LatexConfig.run_times = 1\
-\n\
-c.LatexConfig.manual_cmd_args = [\
-    'compile-latex.sh',\
-    '{filename}'\
-]\n\
-print(c.LatexConfig.manual_cmd_args)\
-" > /home/${NB_USER}/.jupyter/jupyter_config.py
 
 RUN pip install --upgrade setuptools[core]

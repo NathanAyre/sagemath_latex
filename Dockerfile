@@ -25,6 +25,11 @@ RUN chmod +x /usr/local/bin/sagetex-run.py
 
 COPY compile-latex.sh /usr/local/bin/compile-latex.sh
 RUN chmod +x /usr/local/bin/compile-latex.sh
+
+RUN pip install jupyterlab-latex
+# Force JupyterLab to recognise and enable it
+RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
+
 # --- END BLOCK ---
 
 # Create user with uid 1000
@@ -56,9 +61,3 @@ class NoNodeJSWarningFilter(logging.Filter):\n\
 \n\
 logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 " > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
-
-RUN pip install jupyterlab-latex
-# Force JupyterLab to recognise and enable it
-RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
-
-RUN pip install --upgrade setuptools[core]

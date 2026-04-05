@@ -15,8 +15,6 @@ RUN apt-get update && apt-get install -y \
     cm-super \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip install jupyter-offlinenotebook
-RUN jupyter server extension enable --py jupyter_offlinenotebook --sys-prefix
 # Rebuild JupyterLab frontend (this is the critical step)
 # RUN /sage/venv/bin/jupyter lab build
 
@@ -25,11 +23,6 @@ RUN chmod +x /usr/local/bin/sagetex-run.py
 
 COPY compile-latex.sh /usr/local/bin/compile-latex.sh
 RUN chmod +x /usr/local/bin/compile-latex.sh
-
-RUN pip install jupyterlab-latex
-# Force JupyterLab to recognise and enable it
-RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
-
 # --- END BLOCK ---
 
 # Create user with uid 1000
@@ -51,6 +44,16 @@ RUN ln -s /sage/venv/share/jupyter/kernels/sagemath $(jupyter --data-dir)/kernel
 ENV PATH="/sage:$PATH"
 
 WORKDIR /home/${NB_USER}
+
+# --------------
+RUN pip install jupyter-offlinenotebook
+RUN jupyter server extension enable --py jupyter_offlinenotebook --sys-prefix
+
+RUN pip install jupyterlab-latex
+# Force JupyterLab to recognise and enable it
+RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
+# --------------
+
 RUN mkdir /home/${NB_USER}/.jupyter
 RUN echo "\
 import logging\n\

@@ -23,6 +23,19 @@ RUN chmod +x /usr/local/bin/sagetex-run.py
 
 COPY compile-latex.sh /usr/local/bin/compile-latex.sh
 RUN chmod +x /usr/local/bin/compile-latex.sh
+
+RUN mkdir /etc/jupyter
+RUN echo "\
+# c.LatexConfig.shell_escape = 'allow'\
+\n\
+c.LatexConfig.run_times = 1\
+\n\
+# c.LatexConfig.manual_cmd_args = [\
+#     '/usr/local/bin/compile-latex.sh',\
+#      '{filename}.tex'\
+# ]\n\
+c.LatexConfig.latex_command = '/usr/local/bin/compile-latex.sh'\
+" > /etc/jupyter/jupyter_server_config.py
 # --- END BLOCK ---
 
 # Create user with uid 1000
@@ -64,19 +77,6 @@ class NoNodeJSWarningFilter(logging.Filter):\n\
 \n\
 logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 " > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
-
-RUN mkdir -p /etc/jupyter
-RUN echo "\
-# c.LatexConfig.shell_escape = 'allow'\
-\n\
-c.LatexConfig.run_times = 1\
-\n\
-# c.LatexConfig.manual_cmd_args = [\
-#     '/usr/local/bin/compile-latex.sh',\
-#      '{filename}.tex'\
-# ]\n\
-c.LatexConfig.latex_command = '/usr/local/bin/compile-latex.sh'\
-" > /etc/jupyter/jupyter_server_config.py
 
 RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/
 RUN mkdir -p /home/user/.sage/jupyter-4.1

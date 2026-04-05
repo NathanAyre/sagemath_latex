@@ -74,15 +74,13 @@ irst.'.format(src), file=sys.stderr)
 
     if run_sage:
         print('Need to run Sage on {0}.'.format(src))
-        from IPython.core.interactiveshell import InteractiveShell
-        from sage.repl.ipython_extension import SageCustomizations
+        from sage.repl.interpreter import SageTerminalApp as z
+        from sage.repl.ipython_extension import SageCustomizations as C
 
-        shell = InteractiveShell()
-        o = SageCustomizations(shell)
-        o.init_environment()
-        o.init_inspector()
-        o.init_line_transforms()
-        o.register_interface_magics()
+        app = z()
+        app.init_shell()
+        shell = app.shell
+        o = C(shell)
         o.run_init()
 
         shell.run_cell(

@@ -13,3 +13,5 @@ c.LatexConfig.manual_cmd_args = [\
     '{filename}.tex'\
 ]\n\
 " > /etc/jupyter/jupyter_server_config.py
+
+cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/

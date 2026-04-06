@@ -4,7 +4,19 @@ from sage.repl.preparse import preparse_file_named, preparse_file
 from sage.misc.latex_standalone import Standalone
 from sage.misc.latex import pdf, png
 
-latex.add_to_preamble( get_remote_file("https://raw.githubusercontent.com/NathanAyre/storage/refs/heads/main/preamble.tex").read_text() + "\n" + "\\pagenumbering{gobble}" )
+fn = tmp_filename(ext = ".zip")
+!httpx "https://github.com/josephwright/luatex85/archive/refs/tags/v1.0.zip" --download {fn}
+__tmp__ = !unzip -o {fn} -d ~/texmf/tex/latex
+__tmp__ = get_ipython().run_cell_magic("script", "bash", """
+cd ~/texmf/tex/latex/luatex85-1.0
+latex luatex85.ins > /dev/null 2>&1
+""");
+
+preamble = tmp_filename(ext = ".tex")
+preamble = Path(preamble)
+!httpx "https://raw.githubusercontent.com/NathanAyre/storage/refs/heads/main/preamble.tex" --download {preamble}
+
+latex.add_to_preamble( preamble.read_text() + "\n" + "\\pagenumbering{gobble}" )
 
 @register_cell_magic
 def quick_latex(line, cell):

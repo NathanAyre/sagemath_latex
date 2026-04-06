@@ -79,5 +79,5 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 " > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
 
 RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/
-RUN mkdir -p /home/user/.sage/jupyter-4.1
+RUN mkdir /home/user/.sage/jupyter-4.1
 RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.sage/jupyter-4.1/

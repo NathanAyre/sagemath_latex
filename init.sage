@@ -46,3 +46,15 @@ def quick_latex(line, cell):
     !pdf2svg {f}.pdf {f}.svg 1
 
     display(html(f" <h2> {f}.tex </h2> <img src='cell://{f}.svg' style='display:block; margin: 0'> "))
+
+from sage.misc.parser import Parser
+def parse(expr):
+    return Parser(
+        make_int = ZZ,
+        make_float = RR,
+        make_var = var,
+        make_function = globals(),
+        implicit_multiplication = True
+    ).parse_sequence(expr)
+
+get_ipython().Completer.use_jedi = False

@@ -55,7 +55,7 @@ RUN mkdir -p $(jupyter --data-dir)/kernels
 RUN ln -s /sage/venv/share/jupyter/kernels/sagemath $(jupyter --data-dir)/kernels
 
 ENV PATH="/sage:$PATH"
-
+COPY init.sage ${HOME}/.sage/init.sage
 WORKDIR /home/${NB_USER}
 
 # --------------

@@ -4,19 +4,21 @@ from sage.repl.preparse import preparse_file_named, preparse_file
 from sage.misc.latex_standalone import Standalone
 from sage.misc.latex import pdf, png
 
+__tmp__ = !mktexlsr ~/texmf
 fn = tmp_filename(ext = ".zip")
-!httpx "https://github.com/josephwright/luatex85/archive/refs/tags/v1.0.zip" --download {fn}
+__tmp__ = !httpx "https://mirrors.ctan.org/macros/generic/luatex85.zip" --follow-redirects --download {fn}
 __tmp__ = !unzip -o {fn} -d ~/texmf/tex/latex
 __tmp__ = get_ipython().run_cell_magic("script", "bash", """
-cd ~/texmf/tex/latex/luatex85-1.0
+cd ~/texmf/tex/latex/luatex85
 latex luatex85.ins > /dev/null 2>&1
 """);
+__tmp__ = !mktexlsr ~/texmf
 
 preamble = tmp_filename(ext = ".tex")
 preamble = Path(preamble)
-!httpx "https://raw.githubusercontent.com/NathanAyre/storage/refs/heads/main/preamble.tex" --download {preamble}
+__tmp__ = !httpx "https://raw.githubusercontent.com/NathanAyre/storage/refs/heads/main/preamble.tex" --download {preamble}
 
-latex.add_to_preamble( preamble.read_text() + "\n" + "\\pagenumbering{gobble}" )
+latex.extra_preamble( preamble.read_text() + "\n" + "\\pagenumbering{gobble}" )
 
 @register_cell_magic
 def quick_latex(line, cell):

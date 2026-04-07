@@ -73,16 +73,16 @@ def quick_latex(line, cell):
 
     # Format for HTML
     data_uri = f"data:application/pdf;base64,{pdf_base64_string}"
-
+    od = "pdf-viewer" + time()
     display(html(f"""
-    <div id="pdf-viewer{time()}" style="height: 65vh"></div>
+    <div id="{id}" style="height: 65vh"></div>
 
     <script type="module">
     import EmbedPDF from 'https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js';
 
     EmbedPDF.init({{
         type: 'container',
-        target: document.getElementById('pdf-viewer'),
+        target: document.getElementById('{id}'),
         src: '{data_uri}',
         theme: {{ preference: 'system' }}
     }});

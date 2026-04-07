@@ -3,6 +3,8 @@ from pathlib import Path
 from sage.repl.preparse import preparse_file_named, preparse_file   
 from sage.misc.latex_standalone import Standalone
 from sage.misc.latex import pdf, png
+from time import time
+import base64
 
 __tmp__ = !mktexlsr ~/texmf
 fn = tmp_filename(ext = ".zip")
@@ -49,17 +51,42 @@ def quick_latex(line, cell):
             Path(f + ".tex").read_text().replace(r"\documentclass{standalone}", rf"\documentclass{{{doc_class}}}")
         )
 
-    !pdflatex -shell-escape -draftmode -interaction=batchmode {f}.tex
+    __tmp__ = !pdflatex -shell-escape -draftmode -interaction=batchmode {f}.tex
     try:
         sage_file = Path(f"{f}.sagetex.sage")
         cmd = preparse_file(sage_file.read_text(), line_locals)
-        exec(cmd)
+        __tmp__ = get_ipython().run_cell(cmd, silent = True)
     except BaseException:
         print("file \'%s.sagetex.sage\' not found or failed to run."%f)
-    !pdflatex -shell-escape -interaction=batchmode {f}.tex
-    !pdf2svg {f}.pdf {f}.svg 1
+    __tmp__ = !pdflatex -shell-escape -interaction=batchmode {f}.tex
+    # !pdf2svg {f}.pdf {f}.svg 1
+    # display(html(f" <h2> {f}.tex </h2> <img src='cell://{f}.svg' style='display:block; margin: 0'> "))
 
-    display(html(f" <h2> {f}.tex </h2> <img src='cell://{f}.svg' style='display:block; margin: 0'> "))
+    # Read PDF file as binary
+    with open(f"{f}.pdf", "rb") as pdf_file:
+        # Encode to base64 bytes
+        encoded_bytes = base64.b64encode(pdf_file.read())
+
+        # Convert bytes to a UTF-8 string for HTML use
+        pdf_base64_string = encoded_bytes.decode('utf-8')
+
+    # Format for HTML
+    data_uri = f"data:application/pdf;base64,{pdf_base64_string}"
+
+    display(html(f"""
+    <div id="pdf-viewer{time()}" style="height: 65vh"></div>
+
+    <script type="module">
+    import EmbedPDF from 'https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2'
+
+    EmbedPDF.init({{
+        type: 'container',
+        target: document.getElementById('pdf-viewer'),
+        src: '{data_uri}',
+        theme: {{ preference: 'system' }}
+    }});
+    </script>
+    """))
 
 from sage.misc.parser import Parser
 def parse(expr):

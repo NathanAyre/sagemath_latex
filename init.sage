@@ -6,6 +6,7 @@ from sage.misc.latex import pdf, png
 from time import time
 import base64
 
+__tmp__ = !pip install "httpx[cli]"
 __tmp__ = !mktexlsr ~/texmf
 fn = tmp_filename(ext = ".zip")
 __tmp__ = !httpx "https://mirrors.ctan.org/macros/generic/luatex85.zip" --follow-redirects --download {fn}

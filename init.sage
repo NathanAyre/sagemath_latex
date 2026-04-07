@@ -77,7 +77,7 @@ def quick_latex(line, cell):
     <div id="pdf-viewer{time()}" style="height: 65vh"></div>
 
     <script type="module">
-    import EmbedPDF from 'https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2'
+    import EmbedPDF from 'https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js';
 
     EmbedPDF.init({{
         type: 'container',

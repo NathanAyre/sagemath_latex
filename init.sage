@@ -34,7 +34,7 @@ def PDF(f):
 
     # Format for HTML
     data_uri = f"data:application/pdf;base64,{pdf_base64_string}"
-    id = "pdf-viewer" + time()
+    id = f"pdf-viewer{time()}"
     display(html(f"""
     <div id="{id}" style="height: 65vh"></div>
 

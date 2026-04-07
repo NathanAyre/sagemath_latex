@@ -2,7 +2,7 @@ from IPython.core.magic import register_cell_magic
 from pathlib import Path
 from sage.repl.preparse import preparse_file_named, preparse_file   
 from sage.misc.latex_standalone import Standalone
-from sage.misc.latex import pdf, png
+# from sage.misc.latex import pdf, png
 from time import time
 import base64
 
@@ -22,6 +22,33 @@ preamble = Path(preamble)
 __tmp__ = !httpx "https://raw.githubusercontent.com/NathanAyre/storage/refs/heads/main/preamble.tex" --download {preamble}
 
 latex.extra_preamble( preamble.read_text() + "\n" + "\\pagenumbering{gobble}" )
+
+def PDF(f):
+    # Read PDF file as binary
+    with open(f"{f}.pdf", "rb") as pdf_file:
+        # Encode to base64 bytes
+        encoded_bytes = base64.b64encode(pdf_file.read())
+
+        # Convert bytes to a UTF-8 string for HTML use
+        pdf_base64_string = encoded_bytes.decode('utf-8')
+
+    # Format for HTML
+    data_uri = f"data:application/pdf;base64,{pdf_base64_string}"
+    id = "pdf-viewer" + time()
+    display(html(f"""
+    <div id="{id}" style="height: 65vh"></div>
+
+    <script type="module">
+    import EmbedPDF from 'https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js';
+
+    EmbedPDF.init({{
+        type: 'container',
+        target: document.getElementById('{id}'),
+        src: '{data_uri}',
+        theme: {{ preference: 'system' }}
+    }});
+    </script>
+    """))
 
 @register_cell_magic
 def quick_latex(line, cell):
@@ -62,32 +89,10 @@ def quick_latex(line, cell):
     __tmp__ = !pdflatex -shell-escape -interaction=batchmode {f}.tex
     # !pdf2svg {f}.pdf {f}.svg 1
     # display(html(f" <h2> {f}.tex </h2> <img src='cell://{f}.svg' style='display:block; margin: 0'> "))
-
-    # Read PDF file as binary
-    with open(f"{f}.pdf", "rb") as pdf_file:
-        # Encode to base64 bytes
-        encoded_bytes = base64.b64encode(pdf_file.read())
-
-        # Convert bytes to a UTF-8 string for HTML use
-        pdf_base64_string = encoded_bytes.decode('utf-8')
-
-    # Format for HTML
-    data_uri = f"data:application/pdf;base64,{pdf_base64_string}"
-    od = "pdf-viewer" + time()
-    display(html(f"""
-    <div id="{id}" style="height: 65vh"></div>
-
-    <script type="module">
-    import EmbedPDF from 'https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js';
-
-    EmbedPDF.init({{
-        type: 'container',
-        target: document.getElementById('{id}'),
-        src: '{data_uri}',
-        theme: {{ preference: 'system' }}
-    }});
-    </script>
-    """))
+    try:
+        PDF(f)
+    except BaseException:
+        print("pdf display failed")
 
 from sage.misc.parser import Parser
 def parse(expr):

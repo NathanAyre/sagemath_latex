@@ -109,7 +109,7 @@ def safe_parse(expr):
     return Parser(
         make_int = ZZ,
         make_float = RR,
-        make_var = globals(),
+        make_var = lambda x: globals()[x] if x in globals() else SR(x),
         make_function = globals(),
         implicit_multiplication = True
     ).parse_sequence(expr)

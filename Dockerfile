@@ -38,17 +38,12 @@ c.LatexConfig.shell_escape = 'allow'\
 c.LatexConfig.latex_command = 'tectonic'\
 " > /etc/jupyter/jupyter_server_config.py
 
-RUN pip install jupyterlab-lsp jupyter-lsp
-RUN pip install "python-lsp-server[all]"
-
 RUN apt-get update && apt-get install -y wget ca-certificates && \
     wget -q "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh" -O Miniforge3.sh && \
     bash Miniforge3.sh -b -p "${HOME}/conda" && \
     rm Miniforge3.sh
 ENV PATH="/root/conda/bin:${PATH}"
 RUN conda init bash
-
-RUN conda install -c conda-forge texlab chktex tectonic
 # --- END BLOCK ---
 
 # Create user with uid 1000
@@ -95,3 +90,10 @@ RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/
 RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.sage/jupyter-4.1/
 RUN mkdir ${HOME}/texmf
 RUN cp -a /sage/venv/share/texmf/. ${HOME}/texmf/
+
+RUN mamba install -y -c conda-forge \
+    jupyterlab-lsp \
+    texlab \
+    chktex \
+    tectonic && \
+    mamba clean -ya

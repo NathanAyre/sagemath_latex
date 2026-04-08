@@ -48,7 +48,7 @@ cp init.sage /home/jovyan/.sage/init.sage
 # Texmf (optional but useful)
 # -------------------------
 mkdir -p /home/jovyan/texmf
-cp -a /sage/sage/venv/share/texmf/. /home/jovyan/texmf/
+cp -a /srv/conda/envs/notebook/share/texmf/. /home/jovyan/texmf
 
 # -------------------------
 # Enable extensions

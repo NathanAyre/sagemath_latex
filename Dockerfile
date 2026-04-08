@@ -44,6 +44,13 @@ RUN apt-get update && apt-get install -y wget ca-certificates && \
     rm Miniforge3.sh
 ENV PATH="/root/conda/bin:${PATH}"
 RUN conda init bash
+
+RUN mamba install -y -c conda-forge \
+    jupyterlab-lsp \
+    texlab \
+    chktex \
+    tectonic && \
+    mamba clean -ya
 # --- END BLOCK ---
 
 # Create user with uid 1000
@@ -63,7 +70,7 @@ RUN mkdir -p $(jupyter --data-dir)/kernels
 RUN ln -s /sage/venv/share/jupyter/kernels/sagemath $(jupyter --data-dir)/kernels
 
 ENV PATH="/sage:$PATH"
-COPY init.sage ${HOME}/.sage/init.sage
+
 WORKDIR /home/${NB_USER}
 
 # --------------
@@ -87,16 +94,10 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 " > /home/${NB_USER}/.jupyter/jupyter_lab_config.py
 
 RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/
-RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.sage/jupyter-4.1/
+RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.sage/jupyter4.1/
 RUN mkdir ${HOME}/texmf
 RUN cp -a /sage/venv/share/texmf/. ${HOME}/texmf/
 
 USER root
-RUN mamba install -y -c conda-forge \
-    jupyterlab-lsp \
-    texlab \
-    chktex \
-    tectonic && \
-    mamba clean -ya
-
+COPY init.sage ${HOME}/.sage/init.sage
 USER ${NB_USER}

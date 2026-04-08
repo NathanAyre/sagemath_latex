@@ -2,27 +2,12 @@
 set -e
 
 # -------------------------
-# Install TeXLive packages (APT still required)
-# -------------------------
-sudo apt-get update
-#sudo apt-get install -y \
-#    texlive-fonts-recommended \
-#    texlive-plain-generic \
-#    texlive-latex-base \
-#    texlive-latex-extra \
-#    texlive-latex-recommended \
-#    texlive-publishers \
-#    texlive-science \
-#    texlive-xetex \
-#    cm-super
-
-# -------------------------
 # Install helper scripts
 # -------------------------
 chmod +x sagetex-run.py
 chmod +x compile-latex.sh
-sudo cp sagetex-run.py /usr/local/bin/
-sudo cp compile-latex.sh /usr/local/bin/
+cp sagetex-run.py /usr/local/bin/
+cp compile-latex.sh /usr/local/bin/
 
 # -------------------------
 # Jupyter config
@@ -55,7 +40,7 @@ EOF
 # Sage init file
 # -------------------------
 mkdir -p /home/jovyan/.sage
-sudo cp init.sage /home/jovyan/.sage/init.sage
+cp init.sage /home/jovyan/.sage/init.sage
 
 # -------------------------
 # Texmf (optional but useful)

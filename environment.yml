@@ -7,3 +7,8 @@ dependencies:
     - setuptools
     - jupyterlab
     - jupyterlab_latex
+    - jupyterlab-lsp
+    - wget
+    - texlab
+    - tectonic
+    - chktex

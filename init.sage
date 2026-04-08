@@ -105,13 +105,22 @@ def parse(expr):
         implicit_multiplication = True
     ).parse_sequence(expr)
 
+def safe_parse(expr):
+    return Parser(
+        make_int = ZZ,
+        make_float = RR,
+        make_var = globals(),
+        make_function = globals(),
+        implicit_multiplication = True
+    ).parse_sequence(expr)
+
 def frac(a, b=None):
     if b is None and type(a) == str:
-        a, b = parse(a)
+        a, b = safe_parse(a)
         return a/b
     "endif"
     a, b = [
-        parse(expr) if type(expr) == str else expr
+        safe_parse(expr) if type(expr) == str else expr
         for expr in (a, b)
     ];
     return a/b

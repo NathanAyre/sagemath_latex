@@ -4,11 +4,13 @@ set -e
 # -------------------------
 # Install helper scripts
 # -------------------------
-chmod +x sagetex-run.py
-chmod +x compile-latex.sh
-cp sagetex-run.py /usr/local/bin/
-cp compile-latex.sh /usr/local/bin/
+mkdir -p /home/jovyan/.local/bin
+cp sagetex-run.py /home/jovyan/.local/bin/
+cp compile-latex.sh /home/jovyan/.local/bin/
+chmod +x /home/jovyan/.local/bin/sagetex-run.py
+chmod +x /home/jovyan/.local/bin/compile-latex.sh
 
+echo 'export PATH="/home/jovyan/.local/bin:$PATH"' >> /home/jovyan/.bashrc
 # -------------------------
 # Jupyter config
 # -------------------------

@@ -5,6 +5,7 @@ from sage.misc.latex_standalone import Standalone
 # from sage.misc.latex import pdf, png
 from time import time
 import base64
+from sage.symbolic.units import *
 
 __tmp__ = !pip install "httpx[cli]"
 __tmp__ = !mktexlsr ~/texmf
@@ -103,5 +104,16 @@ def parse(expr):
         make_function = globals(),
         implicit_multiplication = True
     ).parse_sequence(expr)
+
+def frac(a, b=None):
+    if b is None and type(a) == str:
+        a, b = parse(a)
+        return a/b
+    "endif"
+    a, b = [
+        parse(expr) if type(expr) == str else expr
+        for expr in (a, b)
+    ];
+    return a/b
 
 get_ipython().Completer.use_jedi = False

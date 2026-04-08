@@ -91,9 +91,12 @@ RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.sage/jupyter-4.1/
 RUN mkdir ${HOME}/texmf
 RUN cp -a /sage/venv/share/texmf/. ${HOME}/texmf/
 
+USER root
 RUN mamba install -y -c conda-forge \
     jupyterlab-lsp \
     texlab \
     chktex \
     tectonic && \
     mamba clean -ya
+
+USER ${NB_USER}

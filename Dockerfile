@@ -63,7 +63,7 @@ RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER
 
 COPY notebooks/* ${HOME}/
 RUN chown -R ${NB_USER}:${NB_USER} ${HOME}
-
+COPY init.sage ${HOME}/.sage/init.sage
 USER ${NB_USER}
 
 RUN mkdir -p $(jupyter --data-dir)/kernels
@@ -97,7 +97,3 @@ RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/
 RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.sage/jupyter-4.1/
 RUN mkdir ${HOME}/texmf
 RUN cp -a /sage/venv/share/texmf/. ${HOME}/texmf/
-
-USER root
-COPY init.sage ${HOME}/.sage/init.sage
-USER ${NB_USER}

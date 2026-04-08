@@ -5,6 +5,7 @@ dependencies:
     - python
     - setuptools
     - jupyterlab
+    - nodejs
     - jupyterlab-latex
     - jupyterlab-lsp
     - texlab

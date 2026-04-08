@@ -3,12 +3,15 @@ channels:
 dependencies:
     - sage
     - python
-    - pip
     - setuptools
     - jupyterlab
-    - jupyterlab_latex
+    - jupyterlab-latex
     - jupyterlab-lsp
     - wget
     - texlab
     - tectonic
     - chktex
+    - python-lsp-server
+    - jupyter-lsp-python
+    - pip:
+        - "httpx[cli]"

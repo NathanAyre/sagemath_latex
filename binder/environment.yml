@@ -1,0 +1,18 @@
+channels:
+    - conda-forge
+dependencies:
+    - sage
+    - python
+    - setuptools
+    - jupyterlab
+    - nodejs
+    - jupyterlab-latex
+    - jupyterlab-lsp
+    - wget
+    - texlab
+    - tectonic
+    - chktex
+    - python-lsp-server
+    - jupyter-lsp-python
+    - pip:
+        - "httpx[cli]"

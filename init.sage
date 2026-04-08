@@ -126,3 +126,5 @@ def frac(a, b=None):
     return a/b
 
 get_ipython().Completer.use_jedi = False
+get_ipython().Completer.use_jedi = True
+get_ipython().Complete4.greedy = True

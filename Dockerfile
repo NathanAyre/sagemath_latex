@@ -45,7 +45,7 @@ RUN apt-get update && apt-get install -y wget ca-certificates && \
     wget -q "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh" -O Miniforge3.sh && \
     bash Miniforge3.sh -b -p "${HOME}/conda" && \
     rm Miniforge3.sh
-ENV PATH="/home/user/conda/bin:${PATH}"
+ENV PATH="/root/conda/bin:${PATH}"
 RUN conda init bash
 
 RUN conda install -c conda-forge texlab chktex tectonic

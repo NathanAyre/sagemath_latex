@@ -1,0 +1,70 @@
+#!/bin/bash
+set -e
+
+# -------------------------
+# Install TeXLive packages (APT still required)
+# -------------------------
+sudo apt-get update
+#sudo apt-get install -y \
+#    texlive-fonts-recommended \
+#    texlive-plain-generic \
+#    texlive-latex-base \
+#    texlive-latex-extra \
+#    texlive-latex-recommended \
+#    texlive-publishers \
+#    texlive-science \
+#    texlive-xetex \
+#    cm-super
+
+# -------------------------
+# Install helper scripts
+# -------------------------
+chmod +x sagetex-run.py
+chmod +x compile-latex.sh
+sudo cp sagetex-run.py /usr/local/bin/
+sudo cp compile-latex.sh /usr/local/bin/
+
+# -------------------------
+# Jupyter config
+# -------------------------
+mkdir -p /home/jovyan/.jupyter
+mkdir -p /home/jovyan/.sage/jupyter-4.1
+
+cat <<EOF > /home/jovyan/.jupyter/jupyter_server_config.py
+c = get_config()
+c.LatexConfig.shell_escape = 'allow'
+c.LatexConfig.latex_command = 'tectonic'
+EOF
+
+cp /home/jovyan/.jupyter/jupyter_server_config.py /home/jovyan/.sage/jupyter-4.1/
+
+# -------------------------
+# Silence NodeJS warning
+# -------------------------
+cat <<EOF > /home/jovyan/.jupyter/jupyter_lab_config.py
+import logging
+
+class NoNodeJSWarningFilter(logging.Filter):
+    def filter(self, record):
+        return 'Could not determine jupyterlab build status without nodejs' not in record.getMessage()
+
+logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())
+EOF
+
+# -------------------------
+# Sage init file
+# -------------------------
+mkdir -p /home/jovyan/.sage
+sudo cp init.sage /home/jovyan/.sage/init.sage
+
+# -------------------------
+# Texmf (optional but useful)
+# -------------------------
+mkdir -p /home/jovyan/texmf
+cp -a /sage/venv/share/texmf/. /home/jovyan/texmf/
+
+# -------------------------
+# Enable extensions
+# -------------------------
+jupyter server extension enable --py jupyter_offlinenotebook --sys-prefix
+jupyter server extension enable --py jupyterlab_latex --sys-prefix

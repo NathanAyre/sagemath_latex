@@ -125,6 +125,8 @@ def frac(a, b=None):
     ];
     return a/b
 
+def strip_units(expr):
+    return
+
 get_ipython().Completer.use_jedi = False
-get_ipython().Completer.use_jedi = True
-get_ipython().Complete4.greedy = True
+get_ipython().Completer.evaluation = "unsafe"

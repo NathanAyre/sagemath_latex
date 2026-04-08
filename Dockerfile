@@ -83,3 +83,14 @@ RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.jupyter/
 RUN cp /etc/jupyter/jupyter_server_config.py /home/user/.sage/jupyter-4.1/
 RUN mkdir ${HOME}/texmf
 RUN cp -a /sage/venv/share/texmf/. ${HOME}/texmf/
+
+RUN pip install jupyterlab-lsp jupyter-lsp
+RUN pip install "python-lsp-server[all]"
+
+RUN curl -fsSLo Miniforge3.sh "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh" && \
+    bash Miniforge3.sh -b -p "${HOME}/conda" && \
+    rm Miniforge3.sh
+ENV PATH="${HOME}/conda/bin:${PATH}"
+RUN conda init bash
+
+RUN conda install -c conda-forge texlab chktex tectonic

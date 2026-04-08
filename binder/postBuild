@@ -55,3 +55,6 @@ cp -a /srv/conda/envs/notebook/share/texmf/. /home/jovyan/texmf
 # -------------------------
 jupyter server extension enable --py jupyter_offlinenotebook --sys-prefix
 jupyter server extension enable --py jupyterlab_latex --sys-prefix
+
+sage -pip install "python-lsp-server[all]" jupyterlab-lsp
+sage -pip install sage-lsp

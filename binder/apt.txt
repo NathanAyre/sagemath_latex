@@ -1,0 +1,10 @@
+dvipng
+pdf2svg
+dvisvgm
+ghostscript
+imagemagick
+texlive-fonts-recommended
+texlive-plain-generic
+texlive-latex-base
+texlive-latex-recommended
+texlive-science

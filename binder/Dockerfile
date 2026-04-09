@@ -63,7 +63,7 @@ RUN pip install "httpx[cli]"
 RUN pip install nbgitpuller
 RUN pip install tex-fast-recompile
 RUN httpx  "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
-    --download -o /home/jovyan/fastrecompile.sty
+    --download /home/jovyan/fastrecompile.sty
 RUN pip install sage-lsp
 # Enable extensions (still cacheable)
 RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix

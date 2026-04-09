@@ -26,7 +26,6 @@ RUN apt-get update && apt-get install -y \
 # Install Miniforge (conda + mamba)
 # -------------------------
 ENV CONDA_DIR=/opt/conda
-ENV PATH=${CONDA_DIR}/bin:${PATH}
 
 RUN apt-get update && apt-get install -y \
     wget \
@@ -43,17 +42,14 @@ RUN conda config --system --set auto_update_conda false && \
     conda config --system --set channel_priority strict
 
 # Install mamba (fast solver)
-RUN conda install -y mamba && conda clean -ya
+RUN ${CONDA_DIR}/bin/conda install -y mamba && ${CONDA_DIR}/bin/conda clean -ya
 # Conda packages (slow → cache this)
-RUN mamba install -y -c conda-forge \
-    jupyterlab-lsp \
-    jupyterlab-latex \
-    python-lsp-server \
+RUN ${CONDA_DIR}/bin/mamba install -y -c conda-forge \
     texlab \
     tectonic \
     chktex \
     nodejs \
-    && mamba clean -ya
+    && ${CONDA_DIR}/bin/mamba clean -ya
 # -------------------------
 RUN mkdir -p /usr/local/bin
 COPY sagetex-run.py /usr/local/bin/
@@ -86,11 +82,15 @@ USER ${NB_USER}
 WORKDIR /home/${NB_USER}
 
 ENV PATH="/sage:${PATH}"
-RUN sage -pip install jupyter-offlinenotebook
-RUN sage -pip install "httpx[cli]"
-RUN sage -pip install nbgitpuller
-RUN sage -pip install tex-fast-recompile
-RUN sage -pip install sage-lsp
+RUN /sage/venv/bin/pip install \
+    jupyterlab-lsp \
+    jupyterlab-latex \
+    python-lsp-server
+RUN pip install jupyter-offlinenotebook
+RUN pip install "httpx[cli]"
+RUN pip install nbgitpuller
+RUN pip install tex-fast-recompile
+RUN pip install sage-lsp
 ENV PATH="${HOME}/.local/bin:${PATH}"
 ENV PATH="${HOME}/.sage/local/bin:${PATH}"
 # Enable extensions (still cacheable)
@@ -118,21 +118,25 @@ COPY init.sage ${HOME}/.sage/init.sage
 # -------------------------
 # Optional: texmf copy (can be removed if not needed)
 # -------------------------
-RUN mkdir -p $(jupyter --data-dir)/kernels && \
-    ln -s /sage/venv/share/jupyter/kernels/sagemath $(jupyter --data-dir)/kernels
+RUN mkdir -p $(/sage/venv/bin/jupyter --data-dir)/kernels && \
+    ln -s /sage/venv/share/jupyter/kernels/sagemath \
+          $(/sage/venv/bin/jupyter --data-dir)/kernels
+          
 RUN mkdir -p ${HOME}/texmf && \
     cp -a /sage/venv/share/texmf/. ${HOME}/texmf/ || true
+    
 RUN cp /sage/venv/share/texmf/tex/latex/sagetex/sagetex.sty ${HOME}/
-RUN wget "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
-    -o ${HOME}/fastrecompile.sty
+
+RUN wget -O ${HOME}/fastrecompile.sty \
+    "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"
 # -------------------------
 # Notebooks (also late so edits don’t bust cache)
 # -------------------------
-COPY notebooks/ ${HOME}/
+COPY notebooks/* ${HOME}/
 
 # -------------------------
 # Permissions
 # -------------------------
 USER root
-RUN chown -R ${NB_USER}:users ${HOME}
+RUN chown -R ${NB_USER}:${NB_USER} ${HOME}
 USER ${NB_USER}

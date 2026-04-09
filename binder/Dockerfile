@@ -78,11 +78,12 @@ RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER
 USER ${NB_USER}
 WORKDIR /home/${NB_USER}
 
-RUN pip install jupyter-offlinenotebook
-RUN pip install "httpx[cli]"
-RUN pip install nbgitpuller
-RUN pip install tex-fast-recompile
-RUN pip install sage-lsp
+ENV PATH="/sage:${PATH}"
+RUN sage -pip install jupyter-offlinenotebook
+RUN sage -pip install "httpx[cli]"
+RUN sage -pip install nbgitpuller
+RUN sage -pip install tex-fast-recompile
+RUN sage -pip install sage-lsp
 ENV PATH="${HOME}/.local/bin:${PATH}"
 # Enable extensions (still cacheable)
 RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix
@@ -115,7 +116,6 @@ COPY init.sage ${HOME}/.sage/init.sage
 # -------------------------
 # Optional: texmf copy (can be removed if not needed)
 # -------------------------
-ENV PATH="/sage:${PATH}"
 RUN mkdir -p $(jupyter --data-dir)/kernels && \
     ln -s /sage/venv/share/jupyter/kernels/sagemath $(jupyter --data-dir)/kernels
 RUN mkdir -p ${HOME}/texmf && \

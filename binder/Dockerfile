@@ -125,7 +125,7 @@ ENV PATH="${HOME}/.local/bin:${PATH}"
 RUN mkdir -p ${HOME}/texmf && \
     cp -a /srv/conda/envs/notebook/share/texmf/. ${HOME}/texmf/ || true
 # COPY /srv/conda/envs/notebook/share/texmf/tex/latex/sagetex.sty ${HOME}/
-COPY fastrecompile.sty ${HOME}
+RUN cp fastrecompile.sty ${HOME}
 # -------------------------
 # Notebooks (also late so edits don’t bust cache)
 # -------------------------

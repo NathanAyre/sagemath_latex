@@ -28,7 +28,10 @@ RUN apt-get update && apt-get install -y \
     npm \
     chktex \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
+RUN apt-get update && apt-get install -y \
+    wget \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 # tectonic (manual install)
 RUN wget -qO- https://github.com/tectonic-typesetting/tectonic/releases/latest/download/tectonic-x86_64-unknown-linux-gnu.tar.gz \
     | tar xz -C /usr/local/bin --strip-components=1

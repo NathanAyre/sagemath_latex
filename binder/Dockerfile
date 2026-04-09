@@ -70,10 +70,11 @@ RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix
 RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
 
 # -------------------------
-RUN mkdir -p ${HOME}/.local/bin
-COPY sagetex-run.py ${HOME}/.local/bin/
-COPY compile-latex.sh ${HOME}/.local/bin/
-RUN chmod +x ${HOME}/.local/bin/*
+RUN mkdir -p /usr/local/bin
+COPY sagetex-run.py /usr/local/bin/
+COPY compile-latex.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/sagetex-run.py
+RUN chmod +x /usr/local/bin/compile-latex.sh
 # -------------------------
 # Create user (Binder-compatible)
 # -------------------------

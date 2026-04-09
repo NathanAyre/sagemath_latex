@@ -1,6 +1,6 @@
 # Dockerfile for Binder (optimized for caching)
 
-FROM ghcr.io/sagemath/sage-binder-env:10.8-beta-v2
+FROM ghcr.io/sagemath/sage-binder-env:10.8.beta1
 
 USER root
 

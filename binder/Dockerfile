@@ -83,6 +83,7 @@ RUN pip install "httpx[cli]"
 RUN pip install nbgitpuller
 RUN pip install tex-fast-recompile
 RUN pip install sage-lsp
+ENV PATH="${HOME}/.local/bin:${PATH}"
 # Enable extensions (still cacheable)
 RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix
 RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix

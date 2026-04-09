@@ -60,19 +60,17 @@ c.LatexConfig.shell_escape = 'allow'\n\
 c.LatexConfig.latex_command = 'tectonic'\n\
 " > /etc/jupyter/jupyter_server_config.py
 
-# -------------------------
-# USE DEFAULT USER (IMPORTANT)
-# -------------------------
-# DO NOT create your own user — use jovyan
+# Create user with uid 1000
+ARG NB_USER=user
+ARG NB_UID=1000
+ENV NB_USER user
+ENV NB_UID 1000
+ENV HOME /home/${NB_USER}
+RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER}
 
-USER jovyan
-WORKDIR /home/jovyan
-
-# -------------------------
-# Notebooks
-# -------------------------
-COPY notebooks/ ${HOME}/
-
+COPY notebooks/* ${HOME}/
+RUN chown -R ${NB_USER}:${NB_USER} ${HOME}
+USER ${NB_USER}
 # -------------------------
 # Sage kernel (same as template)
 # -------------------------
@@ -81,7 +79,7 @@ RUN mkdir -p $(jupyter --data-dir)/kernels && \
           $(jupyter --data-dir)/kernels
 
 ENV PATH="/sage:${PATH}"
-
+WORKDIR /home/${NB_USER}
 # -------------------------
 # TeX + SageTeX setup
 # -------------------------

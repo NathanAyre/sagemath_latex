@@ -80,11 +80,12 @@ WORKDIR /home/${NB_USER}
 
 ENV PATH="/sage:${PATH}"
 RUN sage -pip install jupyter-offlinenotebook
-RUN sage -pip install "httpx[cli]"
+RUN /sage/venv/bin/pip install "httpx[cli]"
 RUN sage -pip install nbgitpuller
 RUN sage -pip install tex-fast-recompile
 RUN sage -pip install sage-lsp
 ENV PATH="${HOME}/.local/bin:${PATH}"
+ENV PATH="${HOME}/.sage/local/bin:${PATH}"
 # Enable extensions (still cacheable)
 RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix
 RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix

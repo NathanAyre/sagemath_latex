@@ -21,9 +21,30 @@ RUN apt-get update && apt-get install -y \
     dvisvgm \
     perl-doc \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+    # -------------------------
+# Install Miniforge (conda + mamba)
 # -------------------------
+ENV CONDA_DIR=/opt/conda
+ENV PATH=${CONDA_DIR}/bin:${PATH}
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh -O /tmp/miniforge.sh && \
+    bash /tmp/miniforge.sh -b -p ${CONDA_DIR} && \
+    rm /tmp/miniforge.sh
+
+# Make sure conda is usable
+RUN conda config --system --set auto_update_conda false && \
+    conda config --system --add channels conda-forge && \
+    conda config --system --set channel_priority strict
+
+# Install mamba (fast solver)
+RUN conda install -y mamba && conda clean -ya
 # Conda packages (slow → cache this)
-# -------------------------
 RUN mamba install -y -c conda-forge \
     jupyterlab-lsp \
     jupyterlab-latex \

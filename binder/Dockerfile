@@ -101,6 +101,8 @@ RUN /sage/venv/bin/pip install \
     jupyterlab-lsp \
     jupyterlab-latex \
     python-lsp-server
+RUN /opt/conda/bin/npm install --save-dev unified-language-server
+RUN /opt/conda/bin/npm install --save-dev vscode-html-languageserver-bin
 RUN pip install jupyter-offlinenotebook
 RUN pip install "httpx[cli]"
 RUN pip install nbgitpuller

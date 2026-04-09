@@ -61,7 +61,7 @@ RUN mamba install -y -c conda-forge \
 RUN pip install jupyter-offlinenotebook
 RUN pip install "httpx[cli]"
 RUN pip install nbgitpuller
-RUN pip install git+https://github.com/user202729/tex-fast-recompile
+RUN pip install tex-fast-recompile
 RUN httpx "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
     --download /home/jovyan/fastrecompile.sty
 RUN pip install sage-lsp

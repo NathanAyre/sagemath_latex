@@ -71,9 +71,9 @@ RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
 # -------------------------
 # Create user (Binder-compatible)
 # -------------------------
-ARG NB_USER=jovyan
+ARG NB_USER=user
 ARG NB_UID=1000
-ENV NB_USER=jovyan
+ENV NB_USER=user
 ENV NB_UID=1000
 ENV HOME=/home/${NB_USER}
 

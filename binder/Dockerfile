@@ -68,6 +68,12 @@ RUN pip install sage-lsp
 # Enable extensions (still cacheable)
 RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix
 RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
+
+# -------------------------
+RUN mkdir -p ${HOME}/.local/bin
+COPY sagetex-run.py ${HOME}/.local/bin/
+COPY compile-latex.sh ${HOME}/.local/bin/
+RUN chmod +x ${HOME}/.local/bin/*
 # -------------------------
 # Create user (Binder-compatible)
 # -------------------------
@@ -108,12 +114,6 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 # -------------------------
 RUN mkdir -p ${HOME}/.sage
 COPY init.sage ${HOME}/.sage/init.sage
-
-# User-local bin (instead of /usr/local/bin)
-RUN mkdir -p ${HOME}/.local/bin
-COPY sagetex-run.py ${HOME}/.local/bin/
-COPY compile-latex.sh ${HOME}/.local/bin/
-RUN chmod +x ${HOME}/.local/bin/*
 
 # Ensure it's on PATH
 ENV PATH="${HOME}/.local/bin:${PATH}"

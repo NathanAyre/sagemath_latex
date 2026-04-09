@@ -33,11 +33,11 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 # tectonic (manual install)
-RUN wget -qO- https://github.com/tectonic-typesetting/tectonic/releases/latest/download/tectonic-x86_64-unknown-linux-gnu.tar.gz \
+RUN wget -qO- "https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.gz" \
     | tar xz -C /usr/local/bin --strip-components=1
 
 # texlab (manual install)
-RUN wget -q https://github.com/latex-lsp/texlab/releases/latest/download/texlab-x86_64-linux.tar.gz -O texlab.tar.gz && \
+RUN wget -q "https://github.com/latex-lsp/texlab/releases/latest/download/texlab-x86_64-linux.tar.gz" -O texlab.tar.gz && \
     tar -xzf texlab.tar.gz && \
     mv texlab /usr/local/bin/ && \
     rm texlab.tar.gz

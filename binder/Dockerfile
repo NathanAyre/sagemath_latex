@@ -78,6 +78,8 @@ RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER
 # -------------------------
 # Switch to user
 # -------------------------
+COPY notebooks/* ${HOME}/
+RUN chown -R ${NB_USER}:${NB_USER} ${HOME}
 USER ${NB_USER}
 # -------------------------
 RUN mkdir -p $(/sage/venv/bin/jupyter --data-dir)/kernels && \
@@ -127,14 +129,3 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 # -------------------------
 RUN mkdir -p ${HOME}/.sage
 COPY init.sage ${HOME}/.sage/init.sage
-# -------------------------
-# Notebooks (also late so edits don’t bust cache)
-# -------------------------
-COPY notebooks/* ${HOME}/
-
-# -------------------------
-# Permissions
-# -------------------------
-USER root
-RUN chown -R ${NB_USER}:${NB_USER} ${HOME}
-USER ${NB_USER}

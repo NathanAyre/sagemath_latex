@@ -76,8 +76,7 @@ ARG NB_UID=1000
 ENV NB_USER=user
 ENV NB_UID=1000
 ENV HOME=/home/${NB_USER}
-
-# (User already exists in base image, so don't adduser)
+RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER}
 
 # -------------------------
 # Switch to user

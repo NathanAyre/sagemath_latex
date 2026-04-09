@@ -119,7 +119,7 @@ RUN mkdir -p $(jupyter --data-dir)/kernels && \
     ln -s /sage/venv/share/jupyter/kernels/sagemath $(jupyter --data-dir)/kernels
 RUN mkdir -p ${HOME}/texmf && \
     cp -a /sage/venv/share/texmf/. ${HOME}/texmf/ || true
-COPY /sage/venv/share/texmf/tex/latex/sagetex.sty ${HOME}/
+COPY /sage/venv/share/texmf/tex/latex/sagetex/sagetex.sty ${HOME}/
 RUN httpx "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
     --download ${HOME}/fastrecompile.sty
 # -------------------------

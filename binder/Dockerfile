@@ -80,7 +80,7 @@ WORKDIR /home/${NB_USER}
 
 ENV PATH="/sage:${PATH}"
 RUN sage -pip install jupyter-offlinenotebook
-RUN /sage/venv/bin/pip install "httpx[cli]"
+RUN sage -pip install "httpx[cli]"
 RUN sage -pip install nbgitpuller
 RUN sage -pip install tex-fast-recompile
 RUN sage -pip install sage-lsp
@@ -122,8 +122,8 @@ RUN mkdir -p $(jupyter --data-dir)/kernels && \
 RUN mkdir -p ${HOME}/texmf && \
     cp -a /sage/venv/share/texmf/. ${HOME}/texmf/ || true
 RUN cp /sage/venv/share/texmf/tex/latex/sagetex/sagetex.sty ${HOME}/
-RUN httpx "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
-    --download ${HOME}/fastrecompile.sty
+RUN wget "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
+    -o ${HOME}/fastrecompile.sty
 # -------------------------
 # Notebooks (also late so edits don’t bust cache)
 # -------------------------

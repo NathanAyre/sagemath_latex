@@ -100,7 +100,7 @@ WORKDIR /home/${NB_USER}
 RUN /sage/venv/bin/pip install \
     jupyterlab-lsp \
     jupyterlab-latex \
-    python-lsp-server
+    "python-lsp-server[all]"
 RUN /opt/conda/bin/npm install --save-dev unified-language-server
 RUN /opt/conda/bin/npm install --save-dev vscode-html-languageserver-bin
 RUN pip install jupyter-offlinenotebook

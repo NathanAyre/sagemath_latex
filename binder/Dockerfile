@@ -110,6 +110,8 @@ RUN pip install sage-lsp
 # -------------------------
 # Node-based language servers
 # -------------------------
+RUN npm config set prefix "${HOME}/.npm-global"
+ENV PATH="${HOME}/.npm-global/bin:${PATH}"
 RUN npm install -g unified-language-server
 RUN npm install -g vscode-html-languageserver-bin
 

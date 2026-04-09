@@ -10,7 +10,6 @@ USER root
 RUN apt-get update && apt-get install -y \
     texlive-base \
     texlive-latex-recommended \
-    texlive-binextra \
     texlive-extra-utils \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 

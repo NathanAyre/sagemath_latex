@@ -54,19 +54,6 @@ RUN mamba install -y -c conda-forge \
     chktex \
     nodejs \
     && mamba clean -ya
-
-# -------------------------
-# Pip packages (still relatively slow)
-# -------------------------
-RUN pip install jupyter-offlinenotebook
-RUN pip install "httpx[cli]"
-RUN pip install nbgitpuller
-RUN pip install tex-fast-recompile
-RUN pip install sage-lsp
-# Enable extensions (still cacheable)
-RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix
-RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
-
 # -------------------------
 RUN mkdir -p /usr/local/bin
 COPY sagetex-run.py /usr/local/bin/
@@ -91,6 +78,14 @@ RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER
 USER ${NB_USER}
 WORKDIR /home/${NB_USER}
 
+RUN pip install jupyter-offlinenotebook
+RUN pip install "httpx[cli]"
+RUN pip install nbgitpuller
+RUN pip install tex-fast-recompile
+RUN pip install sage-lsp
+# Enable extensions (still cacheable)
+RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix
+RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
 # -------------------------
 # Jupyter config (lightweight → keep late)
 # -------------------------
@@ -125,7 +120,7 @@ RUN mkdir -p $(jupyter --data-dir)/kernels && \
 RUN mkdir -p ${HOME}/texmf && \
     cp -a /sage/venv/share/texmf/. ${HOME}/texmf/ || true
 # COPY /srv/conda/envs/notebook/share/texmf/tex/latex/sagetex.sty ${HOME}/
-RUN httpx  "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
+RUN httpx "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
     --download ${HOME}/fastrecompile.sty
 # -------------------------
 # Notebooks (also late so edits don’t bust cache)

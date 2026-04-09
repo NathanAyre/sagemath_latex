@@ -79,9 +79,22 @@ RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER
 # Switch to user
 # -------------------------
 USER ${NB_USER}
+# -------------------------
+RUN mkdir -p $(/sage/venv/bin/jupyter --data-dir)/kernels && \
+    ln -s /sage/venv/share/jupyter/kernels/sagemath \
+          $(/sage/venv/bin/jupyter --data-dir)/kernels
+          
+RUN mkdir -p ${HOME}/texmf && \
+    cp -a /sage/venv/share/texmf/. ${HOME}/texmf/ || true
+    
+RUN cp /sage/venv/share/texmf/tex/latex/sagetex/sagetex.sty ${HOME}/
+
+RUN wget -O ${HOME}/fastrecompile.sty \
+    "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"
+# -------------------------
+ENV PATH="/sage:${PATH}"
 WORKDIR /home/${NB_USER}
 
-ENV PATH="/sage:${PATH}"
 RUN /sage/venv/bin/pip install \
     jupyterlab-lsp \
     jupyterlab-latex \
@@ -114,21 +127,6 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 # -------------------------
 RUN mkdir -p ${HOME}/.sage
 COPY init.sage ${HOME}/.sage/init.sage
-
-# -------------------------
-# Optional: texmf copy (can be removed if not needed)
-# -------------------------
-RUN mkdir -p $(/sage/venv/bin/jupyter --data-dir)/kernels && \
-    ln -s /sage/venv/share/jupyter/kernels/sagemath \
-          $(/sage/venv/bin/jupyter --data-dir)/kernels
-          
-RUN mkdir -p ${HOME}/texmf && \
-    cp -a /sage/venv/share/texmf/. ${HOME}/texmf/ || true
-    
-RUN cp /sage/venv/share/texmf/tex/latex/sagetex/sagetex.sty ${HOME}/
-
-RUN wget -O ${HOME}/fastrecompile.sty \
-    "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"
 # -------------------------
 # Notebooks (also late so edits don’t bust cache)
 # -------------------------

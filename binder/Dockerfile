@@ -62,6 +62,13 @@ RUN chmod +x /usr/local/bin/sagetex-run.py
 RUN chmod +x /usr/local/bin/compile-latex.sh
 # Ensure it's on PATH
 ENV PATH="/usr/local/bin:${PATH}"
+
+RUN mkdir -p /etc/jupyter
+RUN echo "\
+c = get_config()\n\
+c.LatexConfig.shell_escape = 'allow'\n\
+c.LatexConfig.latex_command = 'tectonic'\n\
+" > /etc/jupyter/jupyter_server_config.py
 # -------------------------
 # Create user (Binder-compatible)
 # -------------------------
@@ -89,15 +96,9 @@ ENV PATH="${HOME}/.sage/local/bin:${PATH}"
 # Enable extensions (still cacheable)
 RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix
 RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
-# -------------------------
-# Jupyter config (lightweight → keep late)
-# -------------------------
+# copying the Jupyter config
 RUN mkdir -p ${HOME}/.jupyter
-RUN echo "\
-c = get_config()\n\
-c.LatexConfig.shell_escape = 'allow'\n\
-c.LatexConfig.latex_command = 'tectonic'\n\
-" > ${HOME}/.jupyter/jupyter_server_config.py
+RUN cp /etc/jupyter/jupyter_server_config.py ${HOME}/.jupyter/jupyter_server_config.py
 
 # Suppress NodeJS warning
 RUN echo "\

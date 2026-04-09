@@ -73,6 +73,8 @@ COPY sagetex-run.py /usr/local/bin/
 COPY compile-latex.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/sagetex-run.py
 RUN chmod +x /usr/local/bin/compile-latex.sh
+# Ensure it's on PATH
+ENV PATH="/usr/local/bin:${PATH}"
 # -------------------------
 # Create user (Binder-compatible)
 # -------------------------
@@ -114,14 +116,14 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 RUN mkdir -p ${HOME}/.sage
 COPY init.sage ${HOME}/.sage/init.sage
 
-# Ensure it's on PATH
-ENV PATH="${HOME}/.local/bin:${PATH}"
-
 # -------------------------
 # Optional: texmf copy (can be removed if not needed)
 # -------------------------
+ENV PATH="/sage:${PATH}"
+RUN mkdir -p $(jupyter --data-dir)/kernels && \
+    ln -s /sage/venv/share/jupyter/kernels/sagemath $(jupyter --data-dir)/kernels
 RUN mkdir -p ${HOME}/texmf && \
-    cp -a /srv/conda/envs/notebook/share/texmf/. ${HOME}/texmf/ || true
+    cp -a /sage/venv/share/texmf/. ${HOME}/texmf/ || true
 # COPY /srv/conda/envs/notebook/share/texmf/tex/latex/sagetex.sty ${HOME}/
 RUN httpx  "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
     --download ${HOME}/fastrecompile.sty

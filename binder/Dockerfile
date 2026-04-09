@@ -62,11 +62,11 @@ RUN pip install jupyter-offlinenotebook
 RUN pip install "httpx[cli]"
 RUN pip install nbgitpuller
 RUN pip install tex-fast-recompile
-RUN httpx "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
-    --follow-redirects --download /home/jovyan/fastrecompile.sty
+RUN httpx  "https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty"\
+    --download -o /home/jovyan/fastrecompile.sty
 RUN pip install sage-lsp
 # Enable extensions (still cacheable)
-RUN jupyter server extension enable --py jupyter_offlinenotebook --sys-prefix
+RUN jupyter server extension enable --py jupyter_offlinenotebok --sys-prefix
 RUN jupyter server extension enable --py jupyterlab_latex --sys-prefix
 # -------------------------
 # Create user (Binder-compatible)

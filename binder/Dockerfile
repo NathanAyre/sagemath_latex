@@ -36,10 +36,10 @@ RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Mi
     bash /tmp/miniforge.sh -b -p ${CONDA_DIR} && \
     rm /tmp/miniforge.sh
 
-# Make sure conda is usable
-RUN conda config --system --set auto_update_conda false && \
-    conda config --system --add channels conda-forge && \
-    conda config --system --set channel_priority strict
+# # Make sure conda is usable
+# RUN conda config --system --set auto_update_conda false && \
+#     conda config --system --add channels conda-forge && \
+#     conda config --system --set channel_priority strict
 
 # Install mamba (fast solver)
 RUN ${CONDA_DIR}/bin/conda install -y mamba && ${CONDA_DIR}/bin/conda clean -ya

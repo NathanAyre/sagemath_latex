@@ -64,8 +64,7 @@ WORKDIR /home/${NB_USER}
 # Installing Node (using nvm package manager)
 # -------------------------
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-RUN . ~/.bashrc
-RUN bash -c "nvm install node"
+RUN bash -c "source ~/.bashrc; nvm install node"
 # -------------------------
 # TeX + SageTeX setup
 # -------------------------

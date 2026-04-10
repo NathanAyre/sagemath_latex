@@ -24,45 +24,30 @@ RUN apt-get update && apt-get install -y \
 
 # Optional tools (replace conda ones)
 RUN apt-get update && apt-get install -y \
-    nodejs \
-    npm \
     chktex \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
-# tectonic (manual install)
-RUN wget -qO- "https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.gz" \
-    | tar xz -C /usr/local/bin --strip-components=1
-
-# texlab (manual install)
-RUN wget -q "https://github.com/latex-lsp/texlab/releases/latest/download/texlab-x86_64-linux.tar.gz" -O texlab.tar.gz && \
-    tar -xzf texlab.tar.gz && \
-    mv texlab /usr/local/bin/ && \
-    rm texlab.tar.gz
-
-# -------------------------
-# Scripts
-# -------------------------
-RUN mkdir -p /usr/local/bin
-COPY sagetex-run.py /usr/local/bin/
-COPY compile-latex.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/sagetex-run.py
-RUN chmod +x /usr/local/bin/compile-latex.sh
-
-ENV PATH="/usr/local/bin:${PATH}"
 
 # -------------------------
 # Jupyter config (system level)
+# • including the creation of the sagemath Jupyter kernel
 # -------------------------
+ENV PATH="/sage:/sage/venv/bin:${PATH}"
+RUN echo "\
+from sage.repl.ipython_kernel.kernel import SageKernelSpec\n\
+SageKernelSpec.update()\
+" > /tmp/init_sage_kernel.py
+RUN sage -python3 /tmp/init_sage_kernel.py
+# jupyter server config
 RUN mkdir -p /etc/jupyter
 RUN echo "\
 c = get_config()\n\
 c.LatexConfig.shell_escape = 'allow'\n\
 c.LatexConfig.latex_command = 'tectonic'\n\
 " > /etc/jupyter/jupyter_server_config.py
-
 # Create user with uid 1000
 ARG NB_USER=user
 ARG NB_UID=1000
@@ -74,15 +59,13 @@ RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER
 COPY notebooks/* ${HOME}/
 RUN chown -R ${NB_USER}:${NB_USER} ${HOME}
 USER ${NB_USER}
-# -------------------------
-# Sage kernel (same as template)
-# -------------------------
-RUN mkdir -p $(jupyter --data-dir)/kernels && \
-    ln -s /sage/venv/share/jupyter/kernels/sagemath \
-          $(jupyter --data-dir)/kernels
-
-ENV PATH="/sage:${PATH}"
 WORKDIR /home/${NB_USER}
+# ------------------------
+# Installing Node (using nvm package manager)
+# -------------------------
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+RUN source ~/.bashrc
+RUN nvm install node
 # -------------------------
 # TeX + SageTeX setup
 # -------------------------
@@ -93,7 +76,14 @@ RUN cp /sage/venv/share/texmf/tex/latex/sagetex/sagetex.sty ${HOME}/
 
 RUN wget -O ${HOME}/fastrecompile.sty \
     https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty
-
+# tectonic (manual install)
+RUN wget -qO- "https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.gz" \
+    | tar xz -C ${HOME}/.local/bin/ --strip-components=1
+# texlab (manual install)
+RUN wget -q "https://github.com/latex-lsp/texlab/releases/latest/download/texlab-x86_64-linux.tar.gz" -O texlab.tar.gz && \
+    tar -xzf texlab.tar.gz && \
+    mv texlab ${HOME}/.local/bin/ && \
+    rm texlab.tar.gz
 # -------------------------
 # Pip installs (separate for caching, using plain pip)
 # -------------------------
@@ -108,14 +98,20 @@ RUN pip install tex-fast-recompile
 RUN pip install sage-lsp
 RUN pip install basedpyright
 RUN pip install zuban
+
+RUN mkdir -p ${HOME}/.local/bin/
+COPY sagetex-run.py ${HOME}/.local/bin/
+COPY compile-latex.sh ${HOME}/.local/bin/
+RUN chmod +x ${HOME}/.local/bin/sagetex-run.py
+RUN chmod +x ${HOME}/.local/bin/compile-latex.sh
 ENV PATH="/home/user/.local/bin:${PATH}"
 # -------------------------
 # Node-based language servers
 # -------------------------
-# RUN npm config set prefix "${HOME}/.npm-global"
-# ENV PATH="${HOME}/.npm-global/bin:${PATH}"
-RUN npm init -y
-RUN jlpm add --dev \
+RUN npm config set prefix "${HOME}/.npm-global"
+ENV PATH="${HOME}/.npm-global/bin:${PATH}"
+# RUN npm init -y
+RUN npm install --global \
     bash-language-server \
     dockerfile-language-server-nodejs \
     pyright \

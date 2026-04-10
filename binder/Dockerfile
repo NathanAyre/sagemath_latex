@@ -112,8 +112,8 @@ RUN pip install zuban
 RUN mkdir -p ${HOME}/.local/bin/
 COPY sagetex-run.py ${HOME}/.local/bin/
 COPY compile-latex.sh ${HOME}/.local/bin/
-RUN chmod +x ${HOME}/.local/bin/sagetex-run.py
-RUN chmod +x ${HOME}/.local/bin/compile-latex.sh
+# RUN chmod +x ${HOME}/.local/bin/sagetex-run.py
+# RUN chmod +x ${HOME}/.local/bin/compile-latex.sh
 ENV PATH="/home/user/.local/bin:${PATH}"
 # -------------------------
 # Node-based language servers

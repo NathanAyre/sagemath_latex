@@ -113,7 +113,7 @@ RUN pip install zuban
 # -------------------------
 # RUN npm config set prefix "${HOME}/.npm-global"
 # ENV PATH="${HOME}/.npm-global/bin:${PATH}"
-RUN npm init
+RUN npm init -y
 RUN jlpm add --dev \
     bash-language-server \
     dockerfile-language-server-nodejs \

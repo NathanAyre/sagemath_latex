@@ -108,6 +108,7 @@ RUN pip install tex-fast-recompile
 RUN pip install sage-lsp
 RUN pip install basedpyright
 RUN pip install zuban
+ENV PATH="/home/user/.local/bin:${PATH}"
 # -------------------------
 # Node-based language servers
 # -------------------------

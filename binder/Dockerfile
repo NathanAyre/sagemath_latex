@@ -86,6 +86,7 @@ RUN cp /sage/venv/share/texmf/tex/latex/sagetex/sagetex.sty ${HOME}/
 RUN wget -O ${HOME}/fastrecompile.sty \
     https://raw.githubusercontent.com/user202729/tex-fast-recompile/refs/heads/main/tex/fastrecompile.sty
 # tectonic (manual install)
+RUN mkdir -p ${HOME}/.local/bin
 RUN wget -qO- "https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-gnu.tar.gz" \
     | tar xz -C ${HOME}/.local/bin/ --strip-components=1
 # texlab (manual install)

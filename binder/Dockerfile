@@ -64,10 +64,9 @@ WORKDIR /home/${NB_USER}
 # Installing Node (using nvm package manager)
 # -------------------------
 # Use bash for the shell
-SHELL ["/bin/bash", "-c"]
+# SHELL ["/bin/bash", "-c"]
 
 RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-RUN source ~/.bashrc
 RUN nvm install
 # -------------------------
 # TeX + SageTeX setup

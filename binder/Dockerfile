@@ -106,15 +106,24 @@ RUN pip install "httpx[cli]"
 RUN pip install nbgitpuller
 RUN pip install tex-fast-recompile
 RUN pip install sage-lsp
-
+RUN pip install basedpyright
+RUN pip install zuban --break-system-packages --upgrade
 # -------------------------
 # Node-based language servers
 # -------------------------
-RUN npm config set prefix "${HOME}/.npm-global"
-ENV PATH="${HOME}/.npm-global/bin:${PATH}"
-RUN npm install -g unified-language-server
-RUN npm install -g vscode-html-languageserver-bin
-
+# RUN npm config set prefix "${HOME}/.npm-global"
+# ENV PATH="${HOME}/.npm-global/bin:${PATH}"
+RUN jlpm add --dev \
+    bash-language-server \
+    dockerfile-language-server-nodejs \
+    pyright \
+    sql-language-server \
+    typescript-language-server \
+    unified-language-server \
+    vscode-css-languageserver-bin \
+    vscode-html-languageserver-bin \
+    vscode-json-languageserver-bin \
+    yaml-language-server
 # -------------------------
 # Enable extensions
 # -------------------------

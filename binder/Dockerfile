@@ -67,7 +67,7 @@ WORKDIR /home/${NB_USER}
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Create a script file sourced by both interactive and non-interactive bash shells
-ENV BASH_ENV ~/.bash_env
+ENV BASH_ENV .bash_env
 RUN touch "${BASH_ENV}"
 RUN echo '. "${BASH_ENV}"' >> ~/.bashrc
 

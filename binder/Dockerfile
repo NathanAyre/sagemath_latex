@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y \
 # -------------------------
 ENV PATH="/sage:/sage/venv/bin:${PATH}"
 RUN echo "\
-from sage.repl.ipython_kernel.kernel import SageKernelSpec\n\
+from sage.repl.ipython_kernel.install import SageKernelSpec\n\
 SageKernelSpec.update()\
 " > /tmp/init_sage_kernel.py
 RUN sage -python3 /tmp/init_sage_kernel.py

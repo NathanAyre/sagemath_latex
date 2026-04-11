@@ -163,5 +163,39 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 RUN mkdir -p ${HOME}/.sage
 COPY init.sage ${HOME}/.sage/init.sage
 
-RUN echo 'c.LanguageServerManager.language_servers = {\n    # Zuban: Custom configuration\n    "zuban": {\n        "version": 2,\n        "argv": ["zuban", "--stdio"],\n        "languages": ["python"], # Adjust if Zuban supports other languages\n        "display_name": "Zuban",\n        "mime_types": ["text/python", "text/x-ipython"]\n    },\n    \n    # Basedpyright: Enhanced Python support\n    "basedpyright": {\n        "version": 2,\n        "argv": ["basedpyright-langserver", "--stdio"],\n        "languages": ["python"],\n        "display_name": "Basedpyright",\n        "mime_types": ["text/python", "text/x-ipython"]\n    },\n    # vscode-html-languageserver-bin (HTML)\n    "vscode-html-languageserver-bin": {\n        "version": 2,\n        "argv": ["vscode-html-languageserver", "--stdio"],\n        "languages": ["html"],\n        "display_name": "HTML Language Server",\n        "mime_types": ["text/html"]\n    },\n    # unified-language-server (Markdown)\n    "unified-language-server": {\n        "version": 2,\n        "argv": ["unified-language-server", "--stdio"],\n        "languages": ["markdown"],\n        "display_name": "Unified Language Server (Markdown)",\n        "mime_types": ["text/markdown", "text/x-ipythongfm"]\n    }\n}'\
+RUN echo 'c.LanguageServerManager.language_servers = {\n\
+    # Zuban: Custom configuration\n\
+    "zuban": {\n\
+        "version": 2,\n\
+        "argv": ["zuban", "--stdio"],\n\
+        "languages": ["python"], # Adjust if Zuban supports other languages\n\
+        "display_name": "Zuban",\n\
+        "mime_types": ["text/python", "text/x-ipython"]\n\
+    },\n\
+    \n\
+    # Basedpyright: Enhanced Python support\n\
+    "basedpyright": {\n\
+        "version": 2,\n\
+        "argv": ["basedpyright-langserver", "--stdio"],\n\
+        "languages": ["python"],\n\
+        "display_name": "Basedpyright",\n\
+        "mime_types": ["text/python", "text/x-ipython"]\n\
+    },\n\
+    # vscode-html-languageserver-bin (HTML)\n\
+    "vscode-html-languageserver-bin": {\n\
+        "version": 2,\n\
+        "argv": ["vscode-html-languageserver", "--stdio"],\n\
+        "languages": ["html"],\n\
+        "display_name": "HTML Language Server",\n\
+        "mime_types": ["text/html"]\n\
+    },\n\
+    # unified-language-server (Markdown)\n\
+    "unified-language-server": {\n\
+        "version": 2,\n\
+        "argv": ["unified-language-server", "--stdio"],\n\
+        "languages": ["markdown"],\n\
+        "display_name": "Unified Language Server (Markdown)",\n\
+        "mime_types": ["text/markdown", "text/x-ipythongfm"]\n\
+    }\n\
+}\n'\
     >> ${HOME}/.jupyter/jupyter_server_config.py

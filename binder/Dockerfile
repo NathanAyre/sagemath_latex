@@ -48,6 +48,24 @@ c = get_config()\n\
 c.LatexConfig.shell_escape = 'allow'\n\
 c.LatexConfig.latex_command = 'tectonic'\n\
 " > /etc/jupyter/jupyter_server_config.py
+# -------------------------
+# Pip installs (separate for caching, using plain pip)
+# -------------------------
+RUN pip install jupyterlab-lsp
+RUN pip install jupyterlab-latex
+RUN pip install "python-lsp-server[all]"
+
+RUN pip install jupyter-offlinenotebook
+RUN pip install "httpx[cli]"
+RUN pip install nbgitpuller
+RUN pip install tex-fast-recompile
+RUN pip install sage-lsp
+RUN pip install basedpyright
+RUN pip install zuban
+# ------------------------
+# END ROOT!!!!!!
+
+# BEGIN USER!!!!!!
 # Create user with uid 1000
 ARG NB_USER=user
 ARG NB_UID=1000
@@ -95,19 +113,6 @@ RUN wget -q "https://github.com/latex-lsp/texlab/releases/latest/download/texlab
     mv texlab ${HOME}/.local/bin/ && \
     rm texlab.tar.gz
 # -------------------------
-# Pip installs (separate for caching, using plain pip)
-# -------------------------
-RUN pip install jupyterlab-lsp
-RUN pip install jupyterlab-latex
-RUN pip install "python-lsp-server[all]"
-
-RUN pip install jupyter-offlinenotebook
-RUN pip install "httpx[cli]"
-RUN pip install nbgitpuller
-RUN pip install tex-fast-recompile
-RUN pip install sage-lsp
-RUN pip install basedpyright
-RUN pip install zuban
 
 RUN mkdir -p ${HOME}/.local/bin/
 COPY sagetex-run.py ${HOME}/.local/bin/

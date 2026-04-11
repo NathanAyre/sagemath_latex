@@ -163,7 +163,8 @@ logging.getLogger('LabApp').addFilter(NoNodeJSWarningFilter())\n\
 RUN mkdir -p ${HOME}/.sage
 COPY init.sage ${HOME}/.sage/init.sage
 
-RUN <<EOF echo 'c.LanguageServerManager.language_servers = {\
+RUN echo <<EOF >> ${HOME}/.jupyter/jupyter_server_config.py
+c.LanguageServerManager.language_servers = {
     # Zuban integration
     "zuban": {
         "version": 2,
@@ -199,6 +200,5 @@ RUN <<EOF echo 'c.LanguageServerManager.language_servers = {\
         "display_name": "Unified Language Server (Markdown)",
         "mime_types": ["text/markdown", "text/x-ipythongfm"]
     }
-}'\
-    >> ${HOME}/.jupyter/jupyter_server_config.py
+}
 EOF
